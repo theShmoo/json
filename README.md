@@ -142,7 +142,7 @@ target_link_libraries(foo PRIVATE nlohmann_json::nlohmann_json)
 
 Since CMake v3.11,
 [FetchContent](https://cmake.org/cmake/help/v3.11/module/FetchContent.html) can
-be used to automatically download the repository as a dependency at configure type.
+be used to automatically download the repository as a dependency at configure time.
 
 Example:
 ```cmake
@@ -206,7 +206,7 @@ If you are using the [Meson Build System](https://mesonbuild.com), add this sour
 
 The provided meson.build can also be used as an alternative to cmake for installing `nlohmann_json` system-wide in which case a pkg-config file is installed. To use it, simply have your build system require the `nlohmann_json` pkg-config dependency. In Meson, it is preferred to use the [`dependency()`](https://mesonbuild.com/Reference-manual.html#dependency) object with a subproject fallback, rather than using the subproject directly.
 
-If you are using [Conan](https://www.conan.io/) to manage your dependencies, merely add `nlohmann_json/x.y.z` to your `conanfile`'s requires, where `x.y.z` is the release version you want to use. Please file issues [here](https://github.com/conan-io/conan-center-index/issues) if you experience problems with the packages.
+If you are using [Conan](https://www.conan.io/) to manage your dependencies, merely add [`nlohmann_json/x.y.z`](https://conan.io/center/nlohmann_json) to your `conanfile`'s requires, where `x.y.z` is the release version you want to use. Please file issues [here](https://github.com/conan-io/conan-center-index/issues) if you experience problems with the packages.
 
 If you are using [Spack](https://www.spack.io/) to manage your dependencies, you can use the [`nlohmann-json` package](https://spack.readthedocs.io/en/latest/package_list.html#nlohmann-json). Please see the [spack project](https://github.com/spack/spack) for any issues regarding the packaging.
 
@@ -1126,7 +1126,7 @@ Other Important points:
 
 ### Binary formats (BSON, CBOR, MessagePack, and UBJSON)
 
-Though JSON is a ubiquitous data format, it is not a very compact format suitable for data exchange, for instance over a network. Hence, the library supports [BSON](http://bsonspec.org) (Binary JSON), [CBOR](https://cbor.io) (Concise Binary Object Representation), [MessagePack](https://msgpack.org), and [UBJSON](http://ubjson.org) (Universal Binary JSON Specification) to efficiently encode JSON values to byte vectors and to decode such vectors.
+Though JSON is a ubiquitous data format, it is not a very compact format suitable for data exchange, for instance over a network. Hence, the library supports [BSON](https://bsonspec.org) (Binary JSON), [CBOR](https://cbor.io) (Concise Binary Object Representation), [MessagePack](https://msgpack.org), and [UBJSON](https://ubjson.org) (Universal Binary JSON Specification) to efficiently encode JSON values to byte vectors and to decode such vectors.
 
 ```cpp
 // create a JSON value
@@ -1201,8 +1201,8 @@ auto cbor = json::to_msgpack(j); // 0xD5 (fixext2), 0x10, 0xCA, 0xFE
 Though it's 2021 already, the support for C++11 is still a bit sparse. Currently, the following compilers are known to work:
 
 - GCC 4.8 - 11.0 (and possibly later)
-- Clang 3.4 - 11.0 (and possibly later)
-- Apple Clang 9.1 - 12.3 (and possibly later)
+- Clang 3.4 - 12.0 (and possibly later)
+- Apple Clang 9.1 - 12.4 (and possibly later)
 - Intel C++ Compiler 17.0.2 (and possibly later)
 - Microsoft Visual C++ 2015 / Build Tools 14.0.25123.0 (and possibly later)
 - Microsoft Visual C++ 2017 / Build Tools 15.5.180.51428 (and possibly later)
@@ -1227,7 +1227,7 @@ Please note:
 
 - Unsupported versions of GCC and Clang are rejected by `#error` directives. This can be switched off by defining `JSON_SKIP_UNSUPPORTED_COMPILER_CHECK`. Note that you can expect no support in this case.
 
-The following compilers are currently used in continuous integration at [Travis](https://travis-ci.org/nlohmann/json), [AppVeyor](https://ci.appveyor.com/project/nlohmann/json), and [GitHub Actions](https://github.com/nlohmann/json/actions):
+The following compilers are currently used in continuous integration at [Travis](https://travis-ci.org/nlohmann/json), [AppVeyor](https://ci.appveyor.com/project/nlohmann/json), [Drone CI](https://cloud.drone.io/nlohmann/json), and [GitHub Actions](https://github.com/nlohmann/json/actions):
 
 | Compiler                                                          | Operating System   | CI Provider    |
 |-------------------------------------------------------------------|--------------------|----------------|
@@ -1256,6 +1256,7 @@ The following compilers are currently used in continuous integration at [Travis]
 | GCC 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04)                          | Ubuntu 20.04.2 LTS | GitHub Actions |
 | GCC 10.2.0 (Ubuntu 10.2.0-5ubuntu1~20.04)                         | Ubuntu 20.04.2 LTS | GitHub Actions |
 | GCC 11.0.1 20210321 (experimental)                                | Ubuntu 20.04.2 LTS | GitHub Actions |
+| GCC 11.1.0                                                        | Ubuntu (aarch64)   | Drone CI       |
 | Clang 3.5.2 (3.5.2-3ubuntu1)                                      | Ubuntu 20.04.2 LTS | GitHub Actions |
 | Clang 3.6.2 (3.6.2-3ubuntu2)                                      | Ubuntu 20.04.2 LTS | GitHub Actions |
 | Clang 3.7.1 (3.7.1-2ubuntu2)                                      | Ubuntu 20.04.2 LTS | GitHub Actions |
@@ -1271,7 +1272,8 @@ The following compilers are currently used in continuous integration at [Travis]
 | Clang 10.0.0 with GNU-like command-line                           | Windows-10.0.17763 | GitHub Actions |
 | Clang 11.0.0 with GNU-like command-line                           | Windows-10.0.17763 | GitHub Actions |
 | Clang 11.0.0 with MSVC-like command-line                          | Windows-10.0.17763 | GitHub Actions |
-| Clang 11.1.0 (11.1.0-++20210204121720+1fdec59bffc1-1~exp1~20210203232336.162 | Ubuntu 20.04.2 LTS | GitHub Actions |
+| Clang 11.0.0 (11.0.0-2~ubuntu20.04.1)                             | Ubuntu 20.04.2 LTS | GitHub Actions |
+| Clang 12.1.0 (12.0.1-++20210423082613+072c90a863aa-1~exp1~20210423063319.76 | Ubuntu 20.04.2 LTS | GitHub Actions |
 | Visual Studio 14 2015 MSVC 19.0.24241.7 (Build Engine version 14.0.25420.1) | Windows-6.3.9600 | AppVeyor |
 | Visual Studio 15 2017 MSVC 19.16.27035.0 (Build Engine version 15.9.21+g9802d43bc3 for .NET Framework) | Windows-10.0.14393 | AppVeyor |
 | Visual Studio 15 2017 MSVC 19.16.27045.0 (Build Engine version 15.9.21+g9802d43bc3 for .NET Framework) | Windows-10.0.14393 | GitHub Actions |
@@ -1280,9 +1282,9 @@ The following compilers are currently used in continuous integration at [Travis]
 
 ## License
 
-<img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
+<img align="right" src="https://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
 
-The class is licensed under the [MIT License](http://opensource.org/licenses/MIT):
+The class is licensed under the [MIT License](https://opensource.org/licenses/MIT):
 
 Copyright &copy; 2013-2021 [Niels Lohmann](https://nlohmann.me)
 
@@ -1294,9 +1296,9 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 * * *
 
-The class contains the UTF-8 Decoder from Bjoern Hoehrmann which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above). Copyright &copy; 2008-2009 [Björn Hoehrmann](https://bjoern.hoehrmann.de/) <bjoern@hoehrmann.de>
+The class contains the UTF-8 Decoder from Bjoern Hoehrmann which is licensed under the [MIT License](https://opensource.org/licenses/MIT) (see above). Copyright &copy; 2008-2009 [Björn Hoehrmann](https://bjoern.hoehrmann.de/) <bjoern@hoehrmann.de>
 
-The class contains a slightly modified version of the Grisu2 algorithm from Florian Loitsch which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above). Copyright &copy; 2009 [Florian Loitsch](https://florian.loitsch.com/)
+The class contains a slightly modified version of the Grisu2 algorithm from Florian Loitsch which is licensed under the [MIT License](https://opensource.org/licenses/MIT) (see above). Copyright &copy; 2009 [Florian Loitsch](https://florian.loitsch.com/)
 
 The class contains a copy of [Hedley](https://nemequ.github.io/hedley/) from Evan Nemerson which is licensed as [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/).
 
@@ -1572,7 +1574,7 @@ The library itself consists of a single header file licensed under the MIT licen
 - [**libFuzzer**](https://llvm.org/docs/LibFuzzer.html) to implement fuzz testing for OSS-Fuzz
 - [**OSS-Fuzz**](https://github.com/google/oss-fuzz) for continuous fuzz testing of the library ([project repository](https://github.com/google/oss-fuzz/tree/master/projects/json))
 - [**Probot**](https://probot.github.io) for automating maintainer tasks such as closing stale issues, requesting missing information, or detecting toxic comments.
-- [**send_to_wandbox**](https://github.com/nlohmann/json/blob/develop/doc/scripts/send_to_wandbox.py) to send code examples to [Wandbox](http://melpon.org/wandbox)
+- [**send_to_wandbox**](https://github.com/nlohmann/json/blob/develop/doc/scripts/send_to_wandbox.py) to send code examples to [Wandbox](https://wandbox.org)
 - [**Travis**](https://travis-ci.org) for [continuous integration](https://travis-ci.org/nlohmann/json) on Linux and macOS
 - [**Valgrind**](https://valgrind.org) to check for correct memory management
 - [**Wandbox**](https://wandbox.org) for [online examples](https://wandbox.org/permlink/3lCHrFUZANONKv7a)
